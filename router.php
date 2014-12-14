@@ -74,21 +74,20 @@ class Router {
     * Match routes against current URI
     */
     private function attach() {
-        // error_log(print_r($this->routes, true));
         $this->check_method();
         $request = $this->get_request();
 
         foreach ($this->routes as $route) {
             $escaped_route = $this->get_escaped_regex_route($route[1]);
-            // error_log(print_r($escaped_route, true));
+
             if(preg_match($escaped_route, $request, $matches)) {
-                // error_log(print_r($matches, true));
+
                 foreach($matches as $key => $match) {
                     if(is_string($key)) {
                         $this->url_params[$key] = $match;
                     }
                 }
-                // error_log(print_r($this->url_params, true));
+
                 $this->controller = $route[2];
             }
         }
@@ -113,7 +112,6 @@ class Router {
         }
         else {
             $request = rtrim($_SERVER['REQUEST_URI'], '/') . '/';
-            // error_log($request);
         }
 
         return $request;
