@@ -27,8 +27,8 @@ class Router {
     */
     protected $controller = '';
 
-    public function __construct() {
-
+    public function __construct($methods) {
+        $this->methods_allowed = $methods;
     }
 
     /**
@@ -121,4 +121,6 @@ class Router {
     private function check_method() {
 
     }
+
+
 }
