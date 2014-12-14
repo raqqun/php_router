@@ -10,17 +10,13 @@ include_once 'router.php';
 
 $router = new Router(array('GET', 'POST'));
 
+// Dont proceed if requested method is not allowed
+$router->check_method();
 
 $router->register('GET', '/', 'home');
 function home() {
 
     echo 'Hello, World.';
-
-}
-
-function default_404() {
-
-    echo 'This is a 404 page';
 
 }
 
