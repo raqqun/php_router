@@ -1,14 +1,12 @@
 <?php
 
-/**
+ /**
  * PHP Router
  *
  * @package    PHP Router
  * @author     Alexandros Nikiforidis <nikiforidis.alex@gmail.com>
  * @license    GPL2
  */
-
-use Exception;
 
 
 class Router {
