@@ -4,8 +4,9 @@
  * PHP Router
  *
  * @package    PHP Router
+ * @version    0.1 PHP 5 >= 5.4.0
  * @author     Alexandros Nikiforidis <nikiforidis.alex@gmail.com>
- * @license    GPL2
+ * @license    GPL3
  */
 
 
@@ -134,9 +135,8 @@ class Router {
         if(in_array($_SERVER['REQUEST_METHOD'], $this->methods_allowed)) {
             return true;
         }
-        else {
-            http_response_code(405);
-            throw new Exception("METHOD NOT ALLOWED", 1);
-        }
+
+        http_response_code(405);
+        throw new Exception("METHOD NOT ALLOWED", 1);
     }
 }
