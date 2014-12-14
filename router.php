@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * PHP Router
+ *
+ * @package    PHP Router
+ * @author     Alexandros Nikiforidis <nikiforidis.alex@gmail.com>
+ * @license    GPL2
+ */
+
+use Exception;
+
 
 class Router {
 
@@ -118,9 +128,17 @@ class Router {
         call_user_func_array($this->controller, $this->url_params);
     }
 
-    private function check_method() {
-
+    /**
+    * Check sended method against allowed ones
+    * If not allowed set "405 METHOD NOT ALLOWED" header and thow Excpetion
+    */
+    public function check_method() {
+        if(in_array($_SERVER['REQUEST_METHOD'], $this->methods_allowed)) {
+            return true;
+        }
+        else {
+            http_response_code(405);
+            throw new Exception("METHOD NOT ALLOWED", 1);
+        }
     }
-
-
 }
