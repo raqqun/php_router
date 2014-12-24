@@ -8,10 +8,7 @@
 
 include_once 'router.php';
 
-$router = new Router(array('GET', 'POST'));
-
-// Dont proceed if requested method is not allowed
-$router->check_method();
+$router = new Router();
 
 $router->register('GET', '/', 'home');
 function home() {
@@ -20,7 +17,7 @@ function home() {
 
 }
 
-$router->register('GET', 'users/(?P<id>\d+)/', 'get_user_id');
+$router->register(array('GET', 'POST'), 'users/(?P<id>\d+)/', 'get_user_id');
 function get_user_id($id) {
 
     echo "Get user {$id}";
