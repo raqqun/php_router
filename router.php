@@ -16,32 +16,34 @@ class Router {
     * Array that holds all routes
     * @var array
     */
-    protected $routes = null;
+    protected $routes;
 
     /**
     * Array that holds all HTTP methods allowed
     * @var array
     */
-    protected $methods_allowed = array();
+    protected $methods_allowed;
 
     /**
     * Array that holds all urls parameters
     * @var array
     */
-    protected $url_params = array();
+    protected $url_params;
 
     /**
     * String that holds target controller name
     * @var string
     */
-    protected $controller = '';
+    protected $controller;
 
-    public function __construct($methods) {
-        $this->methods_allowed = $methods;
+    protected $base_path;
+
+    public function __construct() {
+
     }
 
     /**
-    * Get routes object from json file
+    * Get routes from json file
     * @param string $file Path to json file
     * @return array $routes
     */
@@ -74,13 +76,13 @@ class Router {
     * Match routes against current URI
     */
     private function attach() {
-        $this->check_method();
         $request = $this->get_request();
 
         foreach ($this->routes as $route) {
             $escaped_route = $this->get_escaped_regex_route($route[1]);
 
             if(preg_match($escaped_route, $request, $matches)) {
+                $this->check_method($route[0]);
 
                 foreach($matches as $key => $match) {
                     if(is_string($key)) {
@@ -122,15 +124,22 @@ class Router {
     * It calls specific controller along with url params found
     */
     private function call_controller() {
-        call_user_func_array($this->controller, $this->url_params);
+        if(isset($this->url_params)){
+            return call_user_func_array($this->controller, $this->url_params);
+        }
+
+        call_user_func($this->controller);
     }
 
     /**
     * Check sended method against allowed ones
     * If not allowed set "405 METHOD NOT ALLOWED" header and thow Excpetion
     */
-    public function check_method() {
-        if(in_array($_SERVER['REQUEST_METHOD'], $this->methods_allowed)) {
+    private function check_method($route_method) {
+        if (is_array($route_method) && in_array($_SERVER['REQUEST_METHOD'], $route_method)) {
+            return true;
+        }
+        elseif (is_string($route_method) && ($_SERVER['REQUEST_METHOD'] == $route_method)) {
             return true;
         }
 
